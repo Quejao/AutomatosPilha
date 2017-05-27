@@ -19,6 +19,10 @@ public class Automato {
     private String episilon;
     private String estadoInicial;
     private String simboloTopo;
+    private String[] estadosFinais;
+    private String[] conjuntoEstados;
+    private ArrayList<Transicao> transicoes;
+    private Deque<String> stack = new ArrayDeque<>();
 
     public String getSimboloTopo() {
         return simboloTopo;
@@ -27,10 +31,6 @@ public class Automato {
     public void setSimboloTopo(String simboloTopo) {
         this.simboloTopo = simboloTopo;
     }
-    private String[] estadosFinais;
-    private String[] conjuntoEstados;
-    private ArrayList<Transicao> transicoes;
-    private Deque<String> stack = new ArrayDeque<>();
 
     public void imprimePilha(){
         for(String s:stack){
