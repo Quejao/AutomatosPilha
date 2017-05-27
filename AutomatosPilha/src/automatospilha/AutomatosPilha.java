@@ -19,23 +19,26 @@ public class AutomatosPilha {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        Scanner scanner = new Scanner( System.in);
-//        System.out.println("Digite nome do arquivo: ");
-//        String str = scanner.nextLine();
-        String str = "pda.txt";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("> Digite nome do arquivo: ");
+        String str = scanner.nextLine();
         Automato a = Leitor.load(str);
-        int x = runInput(a, "aabb");
+
+        System.out.println("\n> Digite o caso de teste: ");
+        String teste = scanner.nextLine();
+        int x = runInput(a, teste);
     }
 
     public static int runInput(Automato a, String word) {
         String estadoAtual = a.getEstadoInicial();
         String[] letters = word.split("");
-        
+        boolean f;
         for (int i = 0; i < letters.length; i++) {
+            f = true;
             for (Transicao t : a.getTransicoes()) {
                 if (estadoAtual.equals(t.getEstadoAtual())) {
-                    if (a.getStack().peek().equals(t.getTopoPilha())) {
-                        if(t.getAtualPalavra().equals(a.getEpisilon())){
+                    if (t.getAtualPalavra().equals(a.getEpisilon())) {
+                        if (a.getStack().peek().equals(t.getTopoPilha())) {
                             if (t.getSimboloEmpilha().equals(a.getEpisilon())) {
                                 a.getStack().pop();
                             } else {
@@ -45,9 +48,11 @@ public class AutomatosPilha {
                                 a.getStack().push(s[0]);
                             }
                             estadoAtual = t.getEstadoNovo();
-                            i-=1;
+                            i -= 1;
+                            f = false;
                         }
-                        else if (letters[i].equals(t.getAtualPalavra())) {
+                    } else if (letters[i].equals(t.getAtualPalavra())) {
+                        if (a.getStack().peek().equals(t.getTopoPilha())) {
                             if (t.getSimboloEmpilha().equals(a.getEpisilon())) {
                                 a.getStack().pop();
                             } else {
@@ -57,17 +62,41 @@ public class AutomatosPilha {
                                 a.getStack().push(s[0]);
                             }
                             estadoAtual = t.getEstadoNovo();
+                            f = false;
                         }
                     }
                 }
             }
+            if (f) {
+                System.out.println("\nRegeita!\n");
+                return -1;
+            }
         }
-        a.imprimePilha();
-        if(a.getStack().isEmpty()){
+        for (Transicao t : a.getTransicoes()) {
+            if (t.getEstadoAtual().equals(estadoAtual)) {
+                if (t.getAtualPalavra().equals(a.getEpisilon())) {
+                    if (a.getStack().peek().equals(t.getTopoPilha())) {
+                        if (t.getSimboloEmpilha().equals(a.getEpisilon())) {
+                            a.getStack().pop();
+                        } else {
+                            String[] s = t.getSimboloEmpilha().split("");
+                            a.getStack().pop();
+                            a.getStack().push(s[1]);
+                            a.getStack().push(s[0]);
+                        }
+                        estadoAtual = t.getEstadoNovo();
+                    }
+                }
+            }
+        }
+
+        if (a.getStack()
+                .isEmpty()) {
             System.out.println("\nAceita!\n");
-        }else{
+        } else {
             System.out.println("\nRegeita!\n");
         }
+
         return 0;
     }
 
