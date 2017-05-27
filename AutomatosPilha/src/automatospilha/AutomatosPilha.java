@@ -23,8 +23,52 @@ public class AutomatosPilha {
 //        System.out.println("Digite nome do arquivo: ");
 //        String str = scanner.nextLine();
         String str = "pda.txt";
-        Automato automato = Leitor.load(str);
-        automato.imprimeAutomato(automato);
+        Automato a = Leitor.load(str);
+        int x = runInput(a, "aabb");
     }
-    
+
+    public static int runInput(Automato a, String word) {
+        String estadoAtual = a.getEstadoInicial();
+        String[] letters = word.split("");
+        
+        for (int i = 0; i < letters.length; i++) {
+            for (Transicao t : a.getTransicoes()) {
+                if (estadoAtual.equals(t.getEstadoAtual())) {
+                    if (a.getStack().peek().equals(t.getTopoPilha())) {
+                        if(t.getAtualPalavra().equals(a.getEpisilon())){
+                            if (t.getSimboloEmpilha().equals(a.getEpisilon())) {
+                                a.getStack().pop();
+                            } else {
+                                String[] s = t.getSimboloEmpilha().split("");
+                                a.getStack().pop();
+                                a.getStack().push(s[1]);
+                                a.getStack().push(s[0]);
+                            }
+                            estadoAtual = t.getEstadoNovo();
+                            i-=1;
+                        }
+                        else if (letters[i].equals(t.getAtualPalavra())) {
+                            if (t.getSimboloEmpilha().equals(a.getEpisilon())) {
+                                a.getStack().pop();
+                            } else {
+                                String[] s = t.getSimboloEmpilha().split("");
+                                a.getStack().pop();
+                                a.getStack().push(s[1]);
+                                a.getStack().push(s[0]);
+                            }
+                            estadoAtual = t.getEstadoNovo();
+                        }
+                    }
+                }
+            }
+        }
+        a.imprimePilha();
+        if(a.getStack().isEmpty()){
+            System.out.println("\nAceita!\n");
+        }else{
+            System.out.println("\nRegeita!\n");
+        }
+        return 0;
+    }
+
 }

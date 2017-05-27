@@ -5,7 +5,9 @@
  */
 package automatospilha;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 
 /**
  *
@@ -16,9 +18,30 @@ public class Automato {
     private String[] alfabetoPilha;
     private String episilon;
     private String estadoInicial;
-    private String[] estadoFinal;
+    private String simboloTopo;
+
+    public String getSimboloTopo() {
+        return simboloTopo;
+    }
+
+    public void setSimboloTopo(String simboloTopo) {
+        this.simboloTopo = simboloTopo;
+    }
+    private String[] estadosFinais;
     private String[] conjuntoEstados;
     private ArrayList<Transicao> transicoes;
+    private Deque<String> stack = new ArrayDeque<>();
+
+    public void imprimePilha(){
+        for(String s:stack){
+            System.out.print(s+"->");
+        }
+        System.out.println("\n");
+    }
+    
+    public Deque<String> getStack() {
+        return stack;
+    }
 
     public void imprimeAutomato(Automato automato){
         System.out.println("\n->Alfabeto: ");
@@ -32,6 +55,7 @@ public class Automato {
             System.out.print(" "+alfabetoPilha[i]+ " ");
             
         }
+        
         System.out.print("\n->Epsilon : "+ episilon);
         System.out.println("\n->Conjunto de estados: ");
         for (int i = 0;  i < conjuntoEstados.length; i++) {
@@ -41,8 +65,8 @@ public class Automato {
         System.out.print("\n->Estado inicial : \n"+ estadoInicial);
         
         System.out.println("\n->Estados finais: ");
-        for (int i = 0;  i < estadoFinal.length; i++) {
-            System.out.print(" "+estadoFinal[i]+" ");
+        for (int i = 0;  i < estadosFinais.length; i++) {
+            System.out.print(" "+estadosFinais[i]+" ");
             
         }
         System.out.println();
@@ -84,12 +108,12 @@ public class Automato {
         this.estadoInicial = estadoInicial;
     }
 
-    public String[] getEstadoFinal() {
-        return estadoFinal;
+    public String[] getEstadosFinais() {
+        return estadosFinais;
     }
 
-    public void setEstadoFinal(String[] estadoFinal) {
-        this.estadoFinal = estadoFinal;
+    public void setEstadosFinais(String[] estadosFinais) {
+        this.estadosFinais = estadosFinais;
     }
 
     public String[] getAlfabeto() {

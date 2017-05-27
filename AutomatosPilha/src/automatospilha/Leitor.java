@@ -25,7 +25,7 @@ public class Leitor {
             FileReader arc = new FileReader(url);
             BufferedReader bf = new BufferedReader(arc);
             String line = bf.readLine();
-            while(line!=null){
+            while(line != null){
                 text.add(line);
                 line = bf.readLine();
             }
@@ -36,15 +36,17 @@ public class Leitor {
         return text;
     }
     
-    public static Automato load(String arquivo){
-        ArrayList<String> text = Leitor.openArchive(arquivo);
+    public static Automato load(String url){
+        ArrayList<String> text = Leitor.openArchive(url);
         Automato a = new Automato();
         a.setAlfabeto(text.get(0).split(" "));
         a.setAlfabetoPilha(text.get(1).replaceFirst(" ", "").split(" "));
         a.setEpisilon(text.get(2));
+        a.getStack().push(text.get(3));
+        a.setSimboloTopo(text.get(3));
         a.setConjuntoEstados(text.get(4).split(" "));
         a.setEstadoInicial(text.get(5));
-        a.setEstadoFinal(text.get(6).split(" "));
+        a.setEstadosFinais(text.get(6).split(" "));
         ArrayList<Transicao> transicoes = new ArrayList<>();
         for(int i=7; i<text.size(); i++){
             String[] line = text.get(i).split(" ");
