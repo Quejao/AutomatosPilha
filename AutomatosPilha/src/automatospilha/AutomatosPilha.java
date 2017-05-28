@@ -24,7 +24,11 @@ public class AutomatosPilha {
         String str = scanner.nextLine();
         Automato a = Leitor.load(str);
 
-        System.out.println("\n> Digite o caso de teste: ");
+        System.out.print("\n> Digite o caso de teste(");
+        for(String s: a.getAlfabeto()){
+            System.out.print(s);
+        }
+        System.out.println("): ");
         String teste = scanner.nextLine();
         int x = runInput(a, teste);
     }
@@ -44,8 +48,9 @@ public class AutomatosPilha {
                             } else {
                                 String[] s = t.getSimboloEmpilha().split("");
                                 a.getStack().pop();
-                                a.getStack().push(s[1]);
-                                a.getStack().push(s[0]);
+                                for (int j = s.length - 1; j >= 0; j--) {
+                                    a.getStack().push(s[j]);
+                                }
                             }
                             estadoAtual = t.getEstadoNovo();
                             i -= 1;
@@ -58,8 +63,9 @@ public class AutomatosPilha {
                             } else {
                                 String[] s = t.getSimboloEmpilha().split("");
                                 a.getStack().pop();
-                                a.getStack().push(s[1]);
-                                a.getStack().push(s[0]);
+                                for (int j = s.length - 1; j >= 0; j--) {
+                                    a.getStack().push(s[j]);
+                                }
                             }
                             estadoAtual = t.getEstadoNovo();
                             f = false;
@@ -68,7 +74,7 @@ public class AutomatosPilha {
                 }
             }
             if (f) {
-                System.out.println("\nRegeita!\n");
+                System.out.println("\nRejeita!\n");
                 return -1;
             }
         }
@@ -81,29 +87,28 @@ public class AutomatosPilha {
                         } else {
                             String[] s = t.getSimboloEmpilha().split("");
                             a.getStack().pop();
-                            a.getStack().push(s[1]);
-                            a.getStack().push(s[0]);
+                                for (int j = s.length - 1; j >= 0; j--) {
+                                    a.getStack().push(s[j]);
+                                }
                         }
                         estadoAtual = t.getEstadoNovo();
                     }
                 }
             }
         }
-        
+
         boolean eFinal = false;
-        for(String ef: a.getEstadosFinais()){
-            if(estadoAtual.equals(ef)){
+        for (String ef : a.getEstadosFinais()) {
+            if (estadoAtual.equals(ef)) {
                 eFinal = true;
             }
         }
-        
-        if (a.getStack().isEmpty()|| eFinal) {
+
+        if (a.getStack().isEmpty() || eFinal) {
             System.out.println("\nAceita!\n");
         } else {
-            System.out.println("\nRegeita!\n");
+            System.out.println("\nRejeita!\n");
         }
-        
-        a.imprimeAutomato(a);
         return 0;
     }
 
