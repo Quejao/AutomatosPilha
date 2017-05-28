@@ -89,14 +89,21 @@ public class AutomatosPilha {
                 }
             }
         }
-
-        if (a.getStack()
-                .isEmpty()) {
+        
+        boolean eFinal = false;
+        for(String ef: a.getEstadosFinais()){
+            if(estadoAtual.equals(ef)){
+                eFinal = true;
+            }
+        }
+        
+        if (a.getStack().isEmpty()|| eFinal) {
             System.out.println("\nAceita!\n");
         } else {
             System.out.println("\nRegeita!\n");
         }
-
+        
+        a.imprimeAutomato(a);
         return 0;
     }
 
